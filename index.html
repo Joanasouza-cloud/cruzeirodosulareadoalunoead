@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carteirinha Digital - Cruzeiro do Sul</title>
+
+<!-- Biblioteca para gerar QR Code -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<!-- Biblioteca para gerar PDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        background: #0a4ca3;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .card {
+        background: white;
+        width: 360px;
+        padding: 25px;
+        border-radius: 16px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.25);
+        color: #1e293b;
+        position: relative;
+        text-align: center;
+    }
+
+    .logo img {
+        width: 160px;
+        margin-bottom: 10px;
+    }
+
+    .campo-titulo {
+        font-size: 13px;
+        color: #64748b;
+        text-align: left;
+        margin-top: 18px;
+    }
+
+    .campo-valor {
+        font-size: 18px;
+        font-weight: bold;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 6px;
+        margin-bottom: 8px;
+    }
+
+    #qrcode {
+        margin: 20px auto;
+        width: 100px;
+        height: 100px;
+    }
+
+    .button {
+        margin-top: 15px;
+        padding: 12px;
+        background: #0a4ca3;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 100%;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="card" id="carteira">
+
+    <div class="logo">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Cruzeiro_do_Sul_Educacional_%282021%29.png/512px-Cruzeiro_do_Sul_Educacional_%282021%29.png">
+    </div>
+
+    <div class="campo-titulo">Nome</div>
+    <div class="campo-valor">Carlos César da Silva Almeida</div>
+
+    <div class="campo-titulo">Curso</div>
+    <div class="campo-valor">Ciências da Computação</div>
+
+    <div class="campo-titulo">RGM</div>
+    <div class="campo-valor">02855290-3</div>
+
+    <div class="campo-titulo">CPF</div>
+    <div class="campo-valor">123.456.789-00</div>
+
+    <div class="campo-titulo">Validade</div>
+    <div class="campo-valor">31/12/2027</div>
+
+    <div id="qrcode"></div>
+
+</div>
+
+<button class="button" onclick="baixarPDF()">Baixar PDF</button>
+
+<script>
+    // Gera o QR Code apontando para validar.html
+    new QRCode(document.getElementById("qrcode"), {
+        text: window.location.href.replace("index.html", "") + "validar.html",
+        width: 110,
+        height: 110
+    });
+
+    // Função para baixar o PDF
+    function baixarPDF() {
+        const elemento = document.getElementById("carteira");
+        const config = {
+            filename: "carteirinha.pdf",
+            margin: 5,
+            image: { type: "jpeg", quality: 1 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" }
+        };
+        html2pdf().set(config).from(elemento).save();
+    }
+</script>
+
+</body>
+</html>
+
